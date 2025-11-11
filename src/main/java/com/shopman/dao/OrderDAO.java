@@ -13,8 +13,8 @@ import java.util.List;
 public class OrderDAO extends DAO {
     
     /**
-     * Lấy tất cả đơn hàng
-     * @return Danh sách tất cả đơn hàng
+     * Get all orders
+     * @return List of all orders
      */
     public List<Order> getAllOrders() {
         List<Order> orders = new ArrayList<>();
@@ -34,9 +34,9 @@ public class OrderDAO extends DAO {
                     rs.getFloat("total"),
                     new java.sql.Time(rs.getTime("time").getTime()),
                     new java.sql.Date(rs.getDate("date").getTime()),
-                    null, // seller - sẽ được tải riêng nếu cần
-                    null, // customer - sẽ được tải riêng nếu cần
-                    null  // shipper - sẽ được tải riêng nếu cần
+                    null, // seller - will be loaded separately if needed
+                    null, // customer - will be loaded separately if needed
+                    null  // shipper - will be loaded separately if needed
                 );
                 orders.add(order);
             }
@@ -50,9 +50,9 @@ public class OrderDAO extends DAO {
     }
     
     /**
-     * Lấy đơn hàng theo ID cùng thông tin khách hàng
-     * @param orderId Mã đơn hàng
-     * @return Đối tượng Order hoặc null nếu không tìm thấy
+     * Get order by ID with customer information
+     * @param orderId Order ID
+     * @return Order object or null if not found
      */
     public Order getOrderById(String orderId) {
         Connection conn = null;
@@ -72,14 +72,14 @@ public class OrderDAO extends DAO {
             rs = ps.executeQuery();
             
             if (rs.next()) {
-                // Tạo đối tượng customer
+                // Create customer object
                 com.shopman.model.Customer customer = new com.shopman.model.Customer();
                 customer.setId(rs.getString("customer_id"));
                 customer.setName(rs.getString("name"));
                 customer.setAdd(rs.getString("addr"));
                 customer.setPhone(rs.getString("phone"));
                 
-                // Tạo đối tượng order
+                // Create order object
                 order = new Order();
                 order.setId(rs.getString("id"));
                 order.setTotal(rs.getFloat("total"));

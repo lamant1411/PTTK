@@ -92,9 +92,6 @@ public class OrderServlet extends HttpServlet {
         }
     }
     
-    /**
-     * List all orders (for manager/seller)
-     */
     private void listOrders(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         

@@ -8,32 +8,22 @@ import java.sql.SQLException;
 
 public class DAO {
     
-    // Database connection configuration
     private static final String DB_URL = "jdbc:mysql://localhost:3306/shopman?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&useUnicode=true";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "khoi21102004";
     
     static {
         try {
-            // Load MySQL JDBC Driver
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("MySQL JDBC Driver not found", e);
+            throw new RuntimeException("Không tìm thấy MySQL JDBC Driver. Vui lòng thêm mysql-connector-j vào dependencies", e);
         }
     }
     
-    /**
-     * Get a database connection
-     * @return Connection object
-     * @throws SQLException if connection fails
-     */
     protected Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
     }
     
-    /**
-     * Close database resources safely
-     */
     protected void closeConnection(Connection conn, PreparedStatement ps, ResultSet rs) {
         try {
             if (rs != null) rs.close();
@@ -44,9 +34,6 @@ public class DAO {
         }
     }
     
-    /**
-     * Close database resources (without ResultSet)
-     */
     protected void closeConnection(Connection conn, PreparedStatement ps) {
         closeConnection(conn, ps, null);
     }
