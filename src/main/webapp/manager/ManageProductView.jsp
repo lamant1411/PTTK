@@ -254,14 +254,6 @@
                 </c:if>
             </div>
         </c:if>
-
-        <!-- Tổng kết -->
-        <div class="summary">
-            <p>Tổng số sản phẩm: <strong>${totalProducts}</strong></p>
-            <c:if test="${not empty currentPage}">
-                <p>Trang ${currentPage} / ${totalPages}</p>
-            </c:if>
-        </div>
     </div>
 </body>
 </html>

@@ -140,7 +140,7 @@ public class AuthServlet extends HttpServlet {
                             response.sendRedirect(request.getContextPath() + "/product?action=list");
                             break;
                         case "manager":
-                            response.sendRedirect(request.getContextPath() + "/manager/dashboard.jsp");
+                            response.sendRedirect(request.getContextPath() + "/manager/ManagerView.jsp");
                             break;
                         case "seller":
                             response.sendRedirect(request.getContextPath() + "/order?action=list");

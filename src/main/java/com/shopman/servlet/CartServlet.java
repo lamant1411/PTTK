@@ -115,7 +115,7 @@ public class CartServlet extends HttpServlet {
             // Check if cart was successfully created/retrieved
             if (cart == null) {
                 request.setAttribute("error", "Unable to load cart. Please try again.");
-                request.getRequestDispatcher("/customer/cart.jsp").forward(request, response);
+                request.getRequestDispatcher("/customer/CartView.jsp").forward(request, response);
                 return;
             }
             
@@ -130,7 +130,7 @@ public class CartServlet extends HttpServlet {
             request.setAttribute("itemCount", cartDetails.size());
             
             // Forward to JSP
-            request.getRequestDispatcher("/customer/cart.jsp").forward(request, response);
+            request.getRequestDispatcher("/customer/CartView.jsp").forward(request, response);
             
         } catch (Exception e) {
             e.printStackTrace();

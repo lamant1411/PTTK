@@ -181,9 +181,9 @@ public class OrderServlet extends HttpServlet {
             String role = (String) session.getAttribute("role");
             
             if ("customer".equals(role)) {
-                request.getRequestDispatcher("/customer/order-view.jsp").forward(request, response);
+                request.getRequestDispatcher("/customer/OrderView.jsp").forward(request, response);
             } else {
-                request.getRequestDispatcher("/manager/order-view.jsp").forward(request, response);
+                request.getRequestDispatcher("/manager/OrderView.jsp").forward(request, response);
             }
             
         } catch (Exception e) {
@@ -213,7 +213,7 @@ public class OrderServlet extends HttpServlet {
             request.setAttribute("orders", orders);
             request.setAttribute("totalOrders", orders.size());
             
-            request.getRequestDispatcher("/customer/my-orders.jsp").forward(request, response);
+            request.getRequestDispatcher("/customer/OrderListView.jsp").forward(request, response);
             
         } catch (Exception e) {
             e.printStackTrace();

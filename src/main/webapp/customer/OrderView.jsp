@@ -61,6 +61,13 @@
             grid-column: 1 / -1;
         }
         
+        .table-wrapper {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+        }
+        
         .section-title {
             font-size: 14px;
             font-weight: 600;
@@ -78,7 +85,7 @@
         .info-row {
             display: flex;
             justify-content: space-between;
-            padding: 6px 0;
+            padding: 3px 0;
             border-bottom: 1px solid #f0f0f0;
         }
         
@@ -133,6 +140,13 @@
             font-size: 13px;
         }
         
+        .order-items-table thead {
+            position: sticky;
+            top: 0;
+            background: #f5f5f5;
+            z-index: 1;
+        }
+        
         .order-items-table th {
             background: #f5f5f5;
             color: #333;
@@ -158,26 +172,20 @@
         }
         
         .order-summary {
+            display: flex;
+            justify-content: end;
             background: #f9f9f9;
             padding: 12px;
             border-radius: 3px;
             margin-top: 10px;
-        }
-        
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 0;
-            font-size: 13px;
-        }
-        
-        .summary-row:last-child {
-            border-top: 2px solid #ddd;
             font-size: 15px;
             font-weight: 600;
             color: green;
             padding-top: 8px;
             margin-top: 6px;
+        }
+        .order-summary span {
+            margin-left: 8px;
         }
         
         .btn-back {
@@ -187,7 +195,6 @@
             color: white;
             text-decoration: none;
             border-radius: 3px;
-            margin-top: 15px;
             font-size: 13px;
         }
         
@@ -217,10 +224,12 @@
     </nav>
 
     <div class="container">
+        <a href="${pageContext.request.contextPath}/order?action=myOrders" class="btn-back">← Quay lại</a>
         <div class="page-header">
             <h1 class="page-title">Chi tiết đơn hàng</h1>
             <span class="order-id-badge">#${order.id}</span>
         </div>
+        
 
         <div class="order-content">
             <!-- Thông tin đơn hàng -->
@@ -229,23 +238,23 @@
                 <div class="info-grid">
                     <div class="info-row">
                         <span class="info-label">Ngày đặt:</span>
-                        <span class="info-value"><fmt:formatDate value="${order.date}" pattern="dd/MM/yyyy HH:mm"/></span>
+                        <span class="info-value"><fmt:formatDate value="${order.date}" pattern="dd/MM/yyyy"/> <fmt:formatDate value="${order.time}" pattern="HH:mm"/></span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Trạng thái:</span>
                         <span class="info-value">
                             <c:choose>
                                 <c:when test="${order.status == 'Pending' || order.status == 'pending'}">
-                                    <span class="order-status status-pending">⏳ Chờ xử lý</span>
+                                    <span class="order-status status-pending">Chờ xử lý</span>
                                 </c:when>
                                 <c:when test="${order.status == 'Processing' || order.status == 'processing'}">
-                                    <span class="order-status status-processing">🔄 Đang xử lý</span>
+                                    <span class="order-status status-processing">Đang xử lý</span>
                                 </c:when>
                                 <c:when test="${order.status == 'Completed' || order.status == 'completed'}">
-                                    <span class="order-status status-completed">✅ Hoàn thành</span>
+                                    <span class="order-status status-completed">Hoàn thành</span>
                                 </c:when>
                                 <c:when test="${order.status == 'Cancelled' || order.status == 'cancelled'}">
-                                    <span class="order-status status-cancelled">❌ Đã hủy</span>
+                                    <span class="order-status status-cancelled">Đã hủy</span>
                                 </c:when>
                                 <c:otherwise>
                                     <span class="order-status status-pending">${order.status}</span>
@@ -290,59 +299,41 @@
                     <p style="color: red; padding: 10px;">Không có sản phẩm trong đơn hàng hoặc orderDetails = null</p>
                 </c:if>
                 
-                <table class="order-items-table">
-                    <thead>
-                        <tr>
-                            <th>Sản phẩm</th>
-                            <th style="text-align: right;">Đơn giá</th>
-                            <th style="text-align: center;">SL</th>
-                            <th style="text-align: right;">Thành tiền</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:set var="calculatedTotal" value="0" />
-                        <c:forEach var="item" items="${orderDetails}">
+                <div class="table-wrapper">
+                    <table class="order-items-table">
+                        <thead>
                             <tr>
-                                <td>
-                                    <div class="product-name">${item.product.name}</div>
-                                </td>
-                                <td style="text-align: right;"><fmt:formatNumber value="${item.price}" pattern="#,###"/>₫</td>
-                                <td style="text-align: center;">${item.quantity}</td>
-                                <td style="text-align: right;"><fmt:formatNumber value="${item.price * item.quantity}" pattern="#,###"/>₫</td>
+                                <th>Sản phẩm</th>
+                                <th style="text-align: right;">Đơn giá</th>
+                                <th style="text-align: center;">SL</th>
+                                <th style="text-align: right;">Thành tiền</th>
                             </tr>
-                            <c:set var="calculatedTotal" value="${calculatedTotal + (item.price * item.quantity)}" />
-                        </c:forEach>
+                        </thead>
+                        <tbody>
+                            <c:set var="calculatedTotal" value="0" />
+                            <c:forEach var="item" items="${orderDetails}">
+                                <tr>
+                                    <td>
+                                        <div class="product-name">${item.product.name}</div>
+                                    </td>
+                                    <td style="text-align: right;"><fmt:formatNumber value="${item.price}" pattern="#,###"/>₫</td>
+                                    <td style="text-align: center;">${item.quantity}</td>
+                                    <td style="text-align: right;"><fmt:formatNumber value="${item.price * item.quantity}" pattern="#,###"/>₫</td>
+                                </tr>
+                                <c:set var="calculatedTotal" value="${calculatedTotal + (item.price * item.quantity)}" />
+                            </c:forEach>
                         
-                        <!-- Show message if no items -->
-                        <c:if test="${empty orderDetails}">
-                            <tr>
-                                <td colspan="4" style="text-align: center; padding: 20px; color: #999;">
-                                    Chưa có sản phẩm trong đơn hàng
-                                </td>
-                            </tr>
-                        </c:if>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
 
                 <!-- Tổng kết -->
                 <div class="order-summary">
-                    <div class="summary-row">
-                        <span>Tạm tính:</span>
-                        <span><fmt:formatNumber value="${calculatedTotal}" pattern="#,###"/>₫</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Phí ship:</span>
-                        <span>Miễn phí</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Tổng cộng:</span>
-                        <span><fmt:formatNumber value="${order.total}" pattern="#,###"/>₫</span>
-                    </div>
+                    <span>Tổng cộng: </span>
+                    <span><fmt:formatNumber value="${order.total}" pattern="#,###"/>₫</span>
                 </div>
             </div>
         </div>
-
-        <a href="${pageContext.request.contextPath}/order?action=myOrders" class="btn-back">← Quay lại</a>
     </div>
 </body>
 </html>

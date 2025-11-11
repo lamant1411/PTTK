@@ -19,49 +19,55 @@
     <style>
         .orders-container {
             max-width: 1200px;
-            margin: 30px auto;
-            padding: 20px;
+            margin: 15px auto;
+            padding: 15px;
         }
         
         .page-title {
-            font-size: 28px;
+            font-size: 22px;
             color: #333;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
         }
         
         .order-card {
             background: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            transition: box-shadow 0.2s;
+        }
+        
+        .order-card:hover {
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
         }
         
         .order-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
-            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 8px;
         }
         
         .order-id {
-            font-size: 18px;
+            font-size: 14px;
             font-weight: 600;
             color: #333;
         }
         
         .order-date {
-            color: #666;
-            font-size: 14px;
+            color: #999;
+            font-size: 11px;
+            margin-top: 2px;
         }
         
         .order-status {
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 13px;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 11px;
             font-weight: 600;
         }
         
@@ -91,11 +97,11 @@
         }
         
         .order-body {
-            padding: 15px 0;
+            padding: 6px 0;
         }
         
         .order-total {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 700;
             color: #4CAF50;
             margin: 10px 0;
@@ -103,44 +109,44 @@
         
         .order-actions {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #f0f0f0;
+            gap: 6px;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #f5f5f5;
         }
         
         .btn {
-            padding: 8px 20px;
-            border-radius: 5px;
+            padding: 5px 14px;
+            border-radius: 3px;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 500;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
         
         .btn-view {
-            background: #007bff;
+            background: #2196F3;
             color: white;
         }
         
         .btn-view:hover {
-            background: #0056b3;
+            background: #1976D2;
         }
         
         .btn-cancel {
-            background: #dc3545;
+            background: #f44336;
             color: white;
         }
         
         .btn-cancel:hover {
-            background: #c82333;
+            background: #d32f2f;
         }
         
         .empty-orders {
             text-align: center;
-            padding: 60px 20px;
+            padding: 40px 20px;
             background: white;
-            border-radius: 8px;
+            border-radius: 4px;
         }
         
         .empty-orders-icon {
@@ -203,11 +209,11 @@
                             <div>
                                 <span class="order-status ${order.status}">
                                     <c:choose>
-                                        <c:when test="${order.status == 'pending'}">⏳ Chờ xử lý</c:when>
-                                        <c:when test="${order.status == 'processing'}">⚙️ Đang xử lý</c:when>
-                                        <c:when test="${order.status == 'shipping'}">🚚 Đang giao</c:when>
-                                        <c:when test="${order.status == 'completed'}">✓ Hoàn thành</c:when>
-                                        <c:when test="${order.status == 'cancelled'}">✗ Đã hủy</c:when>
+                                        <c:when test="${order.status == 'pending'}">Chờ xử lý</c:when>
+                                        <c:when test="${order.status == 'processing'}">Đang xử lý</c:when>
+                                        <c:when test="${order.status == 'shipping'}">Đang giao</c:when>
+                                        <c:when test="${order.status == 'completed'}">Hoàn thành</c:when>
+                                        <c:when test="${order.status == 'cancelled'}">Đã hủy</c:when>
                                         <c:otherwise>${order.status}</c:otherwise>
                                     </c:choose>
                                 </span>

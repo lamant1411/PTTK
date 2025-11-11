@@ -311,7 +311,7 @@ body {
 
 .cart-actions { 
     display: flex; 
-    justify-content: space-between;
+    justify-content: end;
     gap: 10px;
     flex-wrap: wrap;
 }

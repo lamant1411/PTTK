@@ -100,7 +100,7 @@ public class ProductServlet extends HttpServlet {
                 page = Integer.parseInt(pageParam);
             }
             
-            int recordsPerPage = 10;
+            int recordsPerPage = 5;
             int offset = (page - 1) * recordsPerPage;
             
             // Get products with pagination
@@ -118,10 +118,10 @@ public class ProductServlet extends HttpServlet {
             String role = (String) request.getSession().getAttribute("role");
             if ("customer".equals(role) || role == null) {
                 // Customer or guest view
-                request.getRequestDispatcher("/customer/product-list.jsp").forward(request, response);
+                request.getRequestDispatcher("/customer/ProductListView.jsp").forward(request, response);
             } else {
                 // Manager/admin view
-                request.getRequestDispatcher("/manager/product-list.jsp").forward(request, response);
+                request.getRequestDispatcher("/manager/ProductListView.jsp").forward(request, response);
             }
             
         } catch (Exception e) {
@@ -154,10 +154,10 @@ public class ProductServlet extends HttpServlet {
                 String role = (String) request.getSession().getAttribute("role");
                 if ("customer".equals(role) || role == null) {
                     // Customer or guest view
-                    request.getRequestDispatcher("/customer/product-view.jsp").forward(request, response);
+                    request.getRequestDispatcher("/customer/ProductView.jsp").forward(request, response);
                 } else {
                     // Manager/admin view
-                    request.getRequestDispatcher("/manager/product-view.jsp").forward(request, response);
+                    request.getRequestDispatcher("/manager/ProductView.jsp").forward(request, response);
                 }
             } else {
                 request.setAttribute("error", "Product not found");
@@ -182,7 +182,7 @@ public class ProductServlet extends HttpServlet {
         String nextId = productDAO.getNextProductId();
         request.setAttribute("nextProductId", nextId);
         
-        request.getRequestDispatcher("/manager/product-add.jsp").forward(request, response);
+        request.getRequestDispatcher("/manager/AddProductView.jsp").forward(request, response);
     }
     
     /**
@@ -210,7 +210,7 @@ public class ProductServlet extends HttpServlet {
                 ProductDAO productDAO = new ProductDAO();
                 String nextId = productDAO.getNextProductId();
                 request.setAttribute("nextProductId", nextId);
-                request.getRequestDispatcher("/manager/product-add.jsp").forward(request, response);
+                request.getRequestDispatcher("/manager/AddProductView.jsp").forward(request, response);
                 return;
             }
             
@@ -222,7 +222,7 @@ public class ProductServlet extends HttpServlet {
                 ProductDAO productDAO = new ProductDAO();
                 String nextId = productDAO.getNextProductId();
                 request.setAttribute("nextProductId", nextId);
-                request.getRequestDispatcher("/manager/product-add.jsp").forward(request, response);
+                request.getRequestDispatcher("/manager/AddProductView.jsp").forward(request, response);
                 return;
             }
             
@@ -236,16 +236,16 @@ public class ProductServlet extends HttpServlet {
                 ProductDAO productDAO = new ProductDAO();
                 String nextId = productDAO.getNextProductId();
                 request.setAttribute("nextProductId", nextId);
-                request.getRequestDispatcher("/manager/product-add.jsp").forward(request, response);
+                request.getRequestDispatcher("/manager/AddProductView.jsp").forward(request, response);
             }
             
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Invalid number format");
-            request.getRequestDispatcher("/manager/product-add.jsp").forward(request, response);
+            request.getRequestDispatcher("/manager/AddProductView.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("error", "Error adding product: " + e.getMessage());
-            request.getRequestDispatcher("/manager/product-add.jsp").forward(request, response);
+            request.getRequestDispatcher("/manager/AddProductView.jsp").forward(request, response);
         }
     }
     
@@ -386,7 +386,14 @@ public class ProductServlet extends HttpServlet {
             request.setAttribute("keyword", keyword);
             request.setAttribute("searchResults", true);
             
-            request.getRequestDispatcher("/manager/product-list.jsp").forward(request, response);
+            // Kiểm tra role để forward đến đúng trang
+            String role = (String) request.getSession().getAttribute("role");
+            
+            if ("customer".equals(role)) {
+                request.getRequestDispatcher("/customer/ProductListView.jsp").forward(request, response);
+            } else {
+                request.getRequestDispatcher("/manager/ProductListView.jsp").forward(request, response);
+            }
             
         } catch (Exception e) {
             e.printStackTrace();

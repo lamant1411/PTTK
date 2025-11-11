@@ -9,12 +9,75 @@
     <title>Sản phẩm - ShopMan</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/customer/static/css/customer.css">
     <style>
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .page-title {
+            margin: 0;
+            flex-shrink: 0;
+        }
+        
+        .search-container {
+            flex: 1;
+            max-width: 500px;
+            margin: 0;
+        }
+        
+        .alert {
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-left: 4px solid #28a745;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-left: 4px solid #dc3545;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+        }
+        
         .products-table-container {
             background: white;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
+            padding: 15px;
+            margin-top: 15px;
         }
         
         .products-table {
@@ -28,10 +91,10 @@
         }
         
         .products-table th {
-            padding: 12px;
+            padding: 8px 10px;
             text-align: left;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             color: #333;
         }
         
@@ -53,8 +116,8 @@
         }
         
         .products-table td {
-            padding: 15px 12px;
-            font-size: 14px;
+            padding: 10px 10px;
+            font-size: 13px;
             vertical-align: middle;
         }
         
@@ -65,20 +128,20 @@
         .product-name {
             font-weight: 600;
             color: #333;
-            margin-bottom: 4px;
-            font-size: 15px;
+            margin-bottom: 3px;
+            font-size: 14px;
         }
         
         .product-id {
-            font-size: 12px;
+            font-size: 11px;
             color: #999;
         }
         
         .product-description {
-            font-size: 13px;
+            font-size: 12px;
             color: #666;
-            line-height: 1.4;
-            margin-top: 4px;
+            line-height: 1.3;
+            margin-top: 3px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -86,7 +149,7 @@
         }
         
         .product-price {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             color: #4CAF50;
             white-space: nowrap;
@@ -94,9 +157,9 @@
         
         .stock {
             display: inline-block;
-            padding: 4px 10px;
+            padding: 3px 8px;
             border-radius: 4px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
             white-space: nowrap;
         }
@@ -115,19 +178,23 @@
             display: flex;
             gap: 6px;
             justify-content: center;
+            align-items: stretch;
         }
         
         .btn-view {
             background: #2196F3;
             color: white;
-            padding: 8px 16px;
+            padding: 6px 10px;
             text-align: center;
             text-decoration: none;
             border-radius: 4px;
             font-weight: 500;
-            font-size: 13px;
+            font-size: 12px;
             transition: background 0.2s;
             white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .btn-view:hover {
@@ -135,17 +202,19 @@
         }
         
         .add-to-cart-form {
+            flex: 1;
             margin: 0;
+            display: flex;
         }
         
-        .btn-add-cart {
+        .btn-add-cart { 
             background: #4CAF50;
             color: white;
-            padding: 8px 16px;
+            padding: 6px 10px;
             border: none;
             border-radius: 4px;
             font-weight: 500;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
             transition: background 0.2s;
             white-space: nowrap;
@@ -190,21 +259,24 @@
     </nav>
 
     <div class="container">
-        <h1 class="page-title">Danh sách sản phẩm</h1>
+        <!-- Header với tiêu đề và tìm kiếm -->
+        <div class="page-header">
+            <h1 class="page-title">Danh sách sản phẩm</h1>
+            
+            <!-- Thanh tìm kiếm -->
+            <div class="search-container">
+                <form action="${pageContext.request.contextPath}/product" method="get" class="search-form">
+                    <input type="hidden" name="action" value="search">
+                    <input type="text" name="keyword" placeholder="Tìm kiếm sản phẩm..." value="${keyword}">
+                    <button type="submit" class="btn-search">🔍 Tìm kiếm</button>
+                </form>
+            </div>
+        </div>
 
         <!-- Thông báo -->
         <c:if test="${not empty param.message}">
             <div class="alert alert-success">${param.message}</div>
         </c:if>
-
-        <!-- Thanh tìm kiếm -->
-        <div class="search-container">
-            <form action="${pageContext.request.contextPath}/product" method="get" class="search-form">
-                <input type="hidden" name="action" value="search">
-                <input type="text" name="keyword" placeholder="Tìm kiếm sản phẩm..." value="${keyword}">
-                <button type="submit" class="btn-search">🔍 Tìm kiếm</button>
-            </form>
-        </div>
 
         <!-- Products Grid -->
         <div class="products-table-container">
@@ -294,5 +366,20 @@
             </div>
         </c:if>
     </div>
+
+    <script>
+        // Tự động ẩn thông báo sau 3 giây
+        window.addEventListener('DOMContentLoaded', function() {
+            var alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                setTimeout(function() {
+                    alert.style.animation = 'slideUp 0.3s ease-in';
+                    setTimeout(function() {
+                        alert.style.display = 'none';
+                    }, 300);
+                }, 3000);
+            });
+        });
+    </script>
 </body>
 </html>

@@ -17,6 +17,50 @@
     <title>${product.name} - ShopMan</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/customer/static/css/customer.css">
     <style>
+        .alert {
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-left: 4px solid #28a745;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-left: 4px solid #dc3545;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+        }
+        
         .product-detail-container {
             max-width: 800px;
             margin: 20px auto;
@@ -205,6 +249,14 @@
             <a href="${pageContext.request.contextPath}/product?action=list" class="btn-back">← Quay lại danh sách</a>
         </div>
 
+        <!-- Thông báo thành công/lỗi -->
+        <c:if test="${not empty param.message}">
+            <div class="alert alert-success">${param.message}</div>
+        </c:if>
+        <c:if test="${not empty param.error}">
+            <div class="alert alert-error">${param.error}</div>
+        </c:if>
+
         <c:if test="${not empty product}">
             <div class="product-detail-container">
                 <h1 class="product-title">${product.name}</h1>
@@ -288,6 +340,19 @@
                 input.value = value + 1;
             }
         }
+
+        // Tự động ẩn thông báo sau 3 giây
+        window.addEventListener('DOMContentLoaded', function() {
+            var alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                setTimeout(function() {
+                    alert.style.animation = 'slideUp 0.3s ease-in';
+                    setTimeout(function() {
+                        alert.style.display = 'none';
+                    }, 300);
+                }, 3000);
+            });
+        });
     </script>
 </body>
 </html>
