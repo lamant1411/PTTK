@@ -105,7 +105,7 @@ public class AuthServlet extends HttpServlet {
         if (username == null || username.trim().isEmpty() ||
             password == null || password.trim().isEmpty()) {
             
-            request.setAttribute("error", "Username and password are required");
+            request.setAttribute("error", "Vui lòng nhập tên đăng nhập và mật khẩu");
             request.getRequestDispatcher("/login.jsp").forward(request, response);
             return;
         }
@@ -154,14 +154,14 @@ public class AuthServlet extends HttpServlet {
                     }
                 }
             } else {
-                request.setAttribute("error", "Invalid username or password");
+                request.setAttribute("error", "Tên đăng nhập hoặc mật khẩu không đúng");
                 request.setAttribute("username", username);
                 request.getRequestDispatcher("/login.jsp").forward(request, response);
             }
             
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", "Login error: " + e.getMessage());
+            request.setAttribute("error", "Lỗi đăng nhập: " + e.getMessage());
             request.getRequestDispatcher("/login.jsp").forward(request, response);
         }
     }
@@ -178,7 +178,7 @@ public class AuthServlet extends HttpServlet {
             session.invalidate();
         }
         
-        response.sendRedirect(request.getContextPath() + "/login.jsp?message=Logged out successfully");
+        response.sendRedirect(request.getContextPath() + "/login.jsp?message=Đăng xuất thành công");
     }
     
     /**
@@ -199,13 +199,13 @@ public class AuthServlet extends HttpServlet {
                 password == null || password.trim().isEmpty() ||
                 confirmPassword == null || confirmPassword.trim().isEmpty()) {
                 
-                request.setAttribute("error", "All required fields must be filled");
+                request.setAttribute("error", "Vui lòng điền đầy đủ các trường bắt buộc");
                 request.getRequestDispatcher("/register.jsp").forward(request, response);
                 return;
             }
             
             if (!password.equals(confirmPassword)) {
-                request.setAttribute("error", "Passwords do not match");
+                request.setAttribute("error", "Mật khẩu không khớp");
                 request.setAttribute("username", username);
                 request.setAttribute("address", address);
                 request.setAttribute("phone", phone);
@@ -215,7 +215,7 @@ public class AuthServlet extends HttpServlet {
             
             // Check if username exists
             if (memberDAO.isUsernameExist(username)) {
-                request.setAttribute("error", "Username already exists");
+                request.setAttribute("error", "Tên đăng nhập đã tồn tại");
                 request.setAttribute("address", address);
                 request.setAttribute("phone", phone);
                 request.getRequestDispatcher("/register.jsp").forward(request, response);
@@ -239,9 +239,9 @@ public class AuthServlet extends HttpServlet {
                 session.setAttribute("role", "customer");
                 session.setAttribute("customerId", customerId);
                 
-                response.sendRedirect(request.getContextPath() + "/product?action=list&message=Registration successful");
+                response.sendRedirect(request.getContextPath() + "/product?action=list&message=Đăng ký thành công");
             } else {
-                request.setAttribute("error", "Failed to register. Please try again.");
+                request.setAttribute("error", "Đăng ký thất bại. Vui lòng thử lại");
                 request.setAttribute("username", username);
                 request.setAttribute("address", address);
                 request.setAttribute("phone", phone);
@@ -250,7 +250,7 @@ public class AuthServlet extends HttpServlet {
             
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", "Registration error: " + e.getMessage());
+            request.setAttribute("error", "Lỗi đăng ký: " + e.getMessage());
             request.getRequestDispatcher("/register.jsp").forward(request, response);
         }
     }

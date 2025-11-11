@@ -158,7 +158,7 @@ public class CartServlet extends HttpServlet {
             String quantityStr = request.getParameter("quantity");
             
             if (productId == null || quantityStr == null) {
-                request.setAttribute("error", "Invalid parameters");
+                request.setAttribute("error", "Tham số không hợp lệ");
                 viewCart(request, response);
                 return;
             }
@@ -166,7 +166,7 @@ public class CartServlet extends HttpServlet {
             int quantity = Integer.parseInt(quantityStr);
             
             if (quantity <= 0) {
-                request.setAttribute("error", "Quantity must be greater than 0");
+                request.setAttribute("error", "Số lượng phải lớn hơn 0");
                 viewCart(request, response);
                 return;
             }
@@ -175,14 +175,14 @@ public class CartServlet extends HttpServlet {
             Product product = productDAO.getProductById(productId);
             
             if (product == null) {
-                request.setAttribute("error", "Product not found");
+                request.setAttribute("error", "Không tìm thấy sản phẩm");
                 viewCart(request, response);
                 return;
             }
             
             // Check stock
             if (product.getQuantity() < quantity) {
-                request.setAttribute("error", "Not enough stock available");
+                request.setAttribute("error", "Không đủ hàng trong kho");
                 viewCart(request, response);
                 return;
             }
@@ -204,7 +204,7 @@ public class CartServlet extends HttpServlet {
                 int newQuantity = existingDetail.getQuantity() + quantity;
                 
                 if (product.getQuantity() < newQuantity) {
-                    request.setAttribute("error", "Not enough stock available");
+                    request.setAttribute("error", "Không đủ hàng trong kho");
                     viewCart(request, response);
                     return;
                 }
@@ -220,17 +220,17 @@ public class CartServlet extends HttpServlet {
             String referer = request.getHeader("Referer");
             if (referer != null && !referer.isEmpty()) {
                 String separator = referer.contains("?") ? "&" : "?";
-                response.sendRedirect(referer + separator + "message=Product added to cart successfully");
+                response.sendRedirect(referer + separator + "message=Thêm vào giỏ hàng thành công");
             } else {
-                response.sendRedirect(request.getContextPath() + "/product?action=list&message=Product added to cart successfully");
+                response.sendRedirect(request.getContextPath() + "/product?action=list&message=Thêm vào giỏ hàng thành công");
             }
             
         } catch (NumberFormatException e) {
-            request.setAttribute("error", "Invalid quantity format");
+            request.setAttribute("error", "Định dạng số lượng không hợp lệ");
             viewCart(request, response);
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", "Error adding to cart: " + e.getMessage());
+            request.setAttribute("error", "Lỗi khi thêm vào giỏ hàng: " + e.getMessage());
             viewCart(request, response);
         }
     }

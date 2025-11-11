@@ -317,7 +317,7 @@
                                     
                                     <td>
                                         <div class="action-buttons">
-                                            <a href="${pageContext.request.contextPath}/customer/product-view.jsp?id=${product.id}" 
+                                            <a href="${pageContext.request.contextPath}/customer/ProductView.jsp?id=${product.id}" 
                                                class="btn-view">Chi tiết</a>
                                             
                                             <c:choose>

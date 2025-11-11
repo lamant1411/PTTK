@@ -17,12 +17,6 @@
     <title>Giỏ hàng - ShopMan</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/customer/static/css/customer.css">
     <style>
-        .cart-container {
-            max-height: calc(100vh - 300px);
-            overflow-y: auto;
-            margin-bottom: 20px;
-        }
-        
         .cart-table-wrapper {
             max-height: 400px;
             overflow-y: auto;
